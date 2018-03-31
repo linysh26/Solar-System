@@ -9,6 +9,10 @@ public class NewBehaviourScript : MonoBehaviour {
 	float x_distance = 0;
 	float y_distance = 0;
 
+	float distance_to_target = 10;
+	Vector3 target_position;
+	
+
 	// Use this for initialization
 	void Start () {
 		//Throw();
@@ -20,7 +24,16 @@ public class NewBehaviourScript : MonoBehaviour {
 		x_distance += initial_forward_speed * Time.deltaTime;
 		y_distance += initial_upward_speed * Time.deltaTime;
 		initial_upward_speed -= gravity_acceleration * Time.deltaTime;
-		this.transform.position = new Vector3 (x_distance + initial_forward_speed * Time.deltaTime, y_distance, 0);
+		this.transform.position = new Vector3 (x_distance, y_distance, 0);
+
+		//method 2nd change rotation and use Translate, initialize rotation 45, 0, 0
+		target_position = new Vector3();
+		this.transform.LookAt(target_position);
+		//get the angle according to the x_coodinate -> f’(x_coordinate) 
+		this.transform.rotation = this.transform.rotation * Quaternion.Euler (Mathf.Clamp (-angle, -42, 42), 0, 0);
+		this.transform.rotation = this.transform.rotation * Quaternion.Euler (-angle, 42, 42);
+		//move toward the current angle
+		this.transform.Translate (Vector3.forward * Mathf.Min (speed * Time.deltaTime, currentDist));
 	}
 
 
